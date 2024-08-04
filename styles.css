@@ -1,0 +1,18 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+button {
+    margin-top: 10px;
+}
