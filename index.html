@@ -1,24 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocab Builder</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <form id="vocabForm">
-            <label for="word">Word:</label>
-            <input type="text" id="word" name="word" required><br><br>
-            
-            <label for="meaning">Meaning:</label>
-            <input type="text" id="meaning" name="meaning" required><br><br>
-            
-            <label for="sentence">Usage in a Sentence:</label>
-            <input type="text" id="sentence" name="sentence" required><br><br>
-            
-            <button type="submit">Add Word</button>
-        </form>
+    <h1>Vocab Builder</h1>
+    <form id="vocabForm">
+        <label for="word">Word:</label>
+        <input type="text" id="word" name="word" required>
+        <br>
+        <label for="meaning">Meaning:</label>
+        <input type="text" id="meaning" name="meaning" required>
+        <br>
+        <label for="sentence">Usage in Sentence:</label>
+        <input type="text" id="sentence" name="sentence" required>
+        <br>
+        <button type="submit">Add Word</button>
+    </form>
+    
+    <h2>Fetch Meaning and Usage</h2>
+    <form id="fetchWordForm">
+        <label for="fetchWord">Word:</label>
+        <input type="text" id="fetchWord" name="fetchWord" required>
+        <button type="button" onclick="fetchWordDetails()">Fetch Details</button>
+    </form>
+    
+    <div id="wordDetails">
+        <h3>Meaning:</h3>
+        <p id="fetchedMeaning"></p>
+        <h3>Usage in Sentence:</h3>
+        <p id="fetchedSentence"></p>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

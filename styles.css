@@ -1,18 +1,49 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
 }
 
+h1, h2, h3 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
 label {
     display: block;
-    margin: 5px 0;
+    margin-top: 10px;
 }
 
 input {
-    margin-bottom: 10px;
+    margin-top: 5px;
+    padding: 8px;
+    width: 300px;
+    box-sizing: border-box;
 }
 
 button {
     margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#wordDetails {
+    margin-top: 20px;
+}
+
+#fetchedMeaning, #fetchedSentence {
+    margin-top: 5px;
+    padding: 8px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    width: 300px;
 }
