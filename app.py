@@ -3,6 +3,7 @@ from azure.data.tables import TableServiceClient
 import os
 import uuid
 from dotenv import load_dotenv
+import random
 
 # Load environment variables from .env file
 load_dotenv()
@@ -32,14 +33,28 @@ def add_word():
         'PartitionKey': 'vocab',
         'RowKey': str(uuid.uuid4()),  # Unique identifier for each entry
         'word': data['word'],
-        'meanings': data['meaning'],
-        'sentences': data['sentence']
+        'meanings': ', '.join(data['meaning']),
+        'sentences': ', '.join(data['sentence'])
     }
 
     # Insert the entity into the table
     table_client.create_entity(entity=word_entry)
     
     return jsonify({"message": "Word added successfully!"}), 201
+
+@app.route('/get_random_word', methods=['GET'])
+def get_random_word():
+    entities = list(table_client.list_entities())
+    if entities:
+        random_word = random.choice(entities)
+        return jsonify({
+            'word': random_word['word'],
+            'meanings': random_word['meanings'].split(', '),  # Split string back into a list
+            'sentences': random_word['sentences'].split(', ')  # Split string back into a list
+        })
+    else:
+        return jsonify({"message": "No words found in the database"}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
