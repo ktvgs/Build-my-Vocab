@@ -3,7 +3,7 @@ from azure.data.tables import TableServiceClient
 import os
 import uuid
 from dotenv import load_dotenv
-import random
+from quiz import Quiz  # Importing the quiz logic
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,6 +17,9 @@ table_name = 'VocabTable'
 # Create a TableServiceClient
 table_service = TableServiceClient.from_connection_string(conn_str=connection_string)
 table_client = table_service.get_table_client(table_name)
+
+# Initialize Quiz with the TableServiceClient
+quiz = Quiz(table_client)
 
 @app.route('/')
 def serve_home():
@@ -44,17 +47,11 @@ def add_word():
 
 @app.route('/get_random_word', methods=['GET'])
 def get_random_word():
-    entities = list(table_client.list_entities())
-    if entities:
-        random_word = random.choice(entities)
-        return jsonify({
-            'word': random_word['word'],
-            'meanings': random_word['meanings'].split(', '),  # Split string back into a list
-            'sentences': random_word['sentences'].split(', ')  # Split string back into a list
-        })
+    random_word = quiz.get_random_word()
+    if random_word:
+        return jsonify(random_word)
     else:
         return jsonify({"message": "No words found in the database"}), 404
-
 
 if __name__ == '__main__':
     app.run(debug=True)

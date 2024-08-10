@@ -62,18 +62,29 @@ function testYourKnowledge() {
         if (data.message) {
             alert(data.message);
         } else {
-            const userMeaning = prompt(`What is the meaning of the word "${data.word}"?`);
-            const correctMeanings = data.meanings;
+            // Display the quiz word
+            document.getElementById('quiz-word').textContent = `What is the meaning of the word "${data.word}"?`;
 
-            if (correctMeanings.includes(userMeaning)) {
-                alert('Correct!');
-            } else {
-                alert(`Incorrect! The correct meanings are: ${correctMeanings.join(', ')}`);
-            }
+            // Store the correct answer to check against later
+            document.getElementById('quiz-answer').dataset.correctAnswer = data.meanings.join(', ');
         }
     })
     .catch((error) => {
         console.error('Error:', error);
         alert('Error fetching random word: ' + error.message);
     });
+}
+
+function submitQuizAnswer() {
+    const userAnswer = document.getElementById('quiz-answer').value.trim();
+    const correctAnswer = document.getElementById('quiz-answer').dataset.correctAnswer;
+
+    if (correctAnswer.includes(userAnswer)) {
+        alert('Correct!');
+    } else {
+        alert(`Incorrect! The correct meanings are: ${correctAnswer}`);
+    }
+
+    // Clear the input field for the next quiz
+    document.getElementById('quiz-answer').value = '';
 }
