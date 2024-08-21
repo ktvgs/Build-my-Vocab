@@ -45,13 +45,16 @@ def add_word():
     
     return jsonify({"message": "Word added successfully!"}), 201
 
-@app.route('/get_random_word', methods=['GET'])
-def get_random_word():
-    random_word = quiz.get_random_word()
-    if random_word:
-        return jsonify(random_word)
+@app.route('/check_answer', methods=['POST'])
+def check_answer():
+    data = request.get_json()
+    word_id = data['word_id']
+    user_answer = data['answer']
+
+    if quiz.check_answer(word_id, user_answer):
+        return jsonify({"message": "Correct!"}), 200
     else:
-        return jsonify({"message": "No words found in the database"}), 404
+        return jsonify({"message": "Incorrect, try again!"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
