@@ -1,0 +1,3 @@
+This is my sample text file to test my vocab builder app therefore i will be using the words that are already in
+my database , so the resent word that i remember is berated and the  next word i ca nthink of is 
+delineate , okay lets just check with these two words.
