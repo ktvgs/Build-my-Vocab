@@ -88,3 +88,19 @@ function submitQuizAnswer() {
     // Clear the input field for the next quiz
     document.getElementById('quiz-answer').value = '';
 }
+
+function fetchVocabStats() {
+    fetch('/vocab_stats')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('totalWordsUsed').textContent = data.total_words_used;
+        document.getElementById('totalDocuments').textContent = data.total_documents;
+    })
+    .catch(error => {
+        console.error('Error fetching vocab stats:', error);
+        alert('Error fetching vocab stats: ' + error.message);
+    });
+}
+
+// Call this function when the page loads to display the stats
+window.onload = fetchVocabStats;

@@ -27,6 +27,7 @@
         <input type="text" id="fetchWord" name="fetchWord" required>
         <button type="button" onclick="fetchWordDetails()">Fetch Details</button>
     </form>
+
     
     <div id="wordDetails">
         <h3>Meaning:</h3>
@@ -43,6 +44,13 @@
     </div>
     
     <button type="button" onclick="testYourKnowledge()">Test Me!</button>
+
+    <h2>Vocab Usage Stats</h2>
+    <div id="vocabStats">
+        <p>Total Words Used: <span id="totalWordsUsed">Loading...</span></p>
+        <p>Total Documents Processed: <span id="totalDocuments">Loading...</span></p>
+    </div>
+
 
     <script src="script.js"></script>
 </body>

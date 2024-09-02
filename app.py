@@ -14,9 +14,16 @@ app = Flask(__name__)
 connection_string = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 table_name = 'VocabTable'
 
+# Define a client for the vocabAnalyzer table
+analyzer_table_name = 'vocabAnalyzer'
+
+
+
 # Create a TableServiceClient
 table_service = TableServiceClient.from_connection_string(conn_str=connection_string)
 table_client = table_service.get_table_client(table_name)
+
+analyzer_table_client = table_service.get_table_client(analyzer_table_name)
 
 # Initialize Quiz with the TableServiceClient
 quiz = Quiz(table_client)
@@ -36,8 +43,8 @@ def add_word():
         'PartitionKey': 'vocab',
         'RowKey': str(uuid.uuid4()),  # Unique identifier for each entry
         'word': data['word'],
-        'meanings': ', '.join(data['meaning']),
-        'sentences': ', '.join(data['sentence'])
+        'meanings': data['meaning'],
+        'sentences': data['sentence']
     }
 
     # Insert the entity into the table
@@ -55,6 +62,25 @@ def check_answer():
         return jsonify({"message": "Correct!"}), 200
     else:
         return jsonify({"message": "Incorrect, try again!"}), 200
+
+@app.route('/vocab_stats', methods=['GET'])
+def get_vocab_stats():
+    # Get all records from the vocabAnalyzer table
+    entities = analyzer_table_client.list_entities()
+    
+    # Initialize counters
+    total_words_used = 0
+    total_documents = 0
+
+    for entity in entities:
+        total_words_used += int(entity['num_words_used'])
+        total_documents += 1
+    
+    return jsonify({
+        "total_words_used": total_words_used,
+        "total_documents": total_documents
+    }), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)

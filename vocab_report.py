@@ -8,16 +8,18 @@ load_dotenv()
 
 # Fetch connection string from environment variables
 connection_string = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
-table_name = 'VocabTable'
 
-# Create a TableServiceClient
+# Initialize table clients
+vocab_table_name = 'VocabTable'
+analyzer_table_name = 'vocabAnalyzer'
 table_service = TableServiceClient.from_connection_string(conn_str=connection_string)
-table_client = table_service.get_table_client(table_name)
+vocab_table_client = table_service.get_table_client(vocab_table_name)
+analyzer_table_client = table_service.get_table_client(analyzer_table_name)
 
 # Function to fetch words from Azure Table Storage
 def fetch_words_from_table():
     words = set()
-    entities = table_client.list_entities()
+    entities = vocab_table_client.list_entities()
     for entity in entities:
         words.add(entity['word'].lower())
     return words
@@ -43,6 +45,20 @@ def mark_file_as_processed(processed_files_path, filename):
     with open(processed_files_path, 'a') as file:
         file.write(filename + '\n')
 
+# Function to store word usage data in the vocabAnalyzer table
+def store_word_usage_data(file_name, word_counts):
+    used_words = [word for word, count in word_counts.items() if count > 0]
+    num_words_used = len(used_words)
+    
+    entity = {
+        'PartitionKey': 'document_id',
+        'RowKey': file_name,
+        'num_words_used': num_words_used,
+        'words_list': ', '.join(used_words)
+    }
+    
+    analyzer_table_client.create_entity(entity)
+
 def process_new_files(directory, processed_files_path):
     vocab_words = fetch_words_from_table()
     processed_files = get_processed_files(processed_files_path)
@@ -54,6 +70,9 @@ def process_new_files(directory, processed_files_path):
             
             word_counts = count_word_occurrences(file_path, vocab_words)
             print(f"Word counts for {filename}: {word_counts}")
+            
+            # Store data in the vocabAnalyzer table
+            store_word_usage_data(filename, word_counts)
             
             mark_file_as_processed(processed_files_path, filename)
 
