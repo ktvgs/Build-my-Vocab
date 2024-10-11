@@ -16,3 +16,15 @@ This is my first Full stack project.
 Using Flask for the backend 
 Implementation Of every other technology will be done using Python.
 
+the fetch meaning of any word using api call
+![image](https://github.com/user-attachments/assets/c8f96f4c-2395-4054-9041-5baed620642f)
+
+Add the word learned to store the collection of words added to your vocab
+![image](https://github.com/user-attachments/assets/c9a73796-ae89-48b0-84ef-f24dc9222e35)
+
+testing your memory also the usage of the words in the documents being written 
+![image](https://github.com/user-attachments/assets/8e630994-6331-4175-93fe-cc23b24f5a1e)
+
+
+
+
